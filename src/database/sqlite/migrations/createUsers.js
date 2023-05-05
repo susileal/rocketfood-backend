@@ -1,0 +1,16 @@
+// só vai criar a tabela se não existir a tabela de usuário
+
+const createUsers = `
+CREATE TABLE IF NOT EXISTS users (
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name VARCHAR,
+  email VARCHAR,
+  password VARCHAR,
+  avatar VARCHAR NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+ 	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  is_admin BIT NOT NULL
+)
+`;
+
+module.exports = createUsers;
