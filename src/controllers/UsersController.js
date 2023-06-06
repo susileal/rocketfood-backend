@@ -28,7 +28,7 @@ class UsersController{
   const { name, email, password, old_password} = request.body;
 
   // não precisa mais pegar o id do usuário pelo parâmetro pelo const { id } = request.params;
-  const { id } = request.params;
+  const id = request.user.id;
 
   const user = await knex("users").where({ id }).first();
 
