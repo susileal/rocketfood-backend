@@ -19,7 +19,6 @@ dishesRoutes.get("/", dishesController.search);
 dishesRoutes.get("/categories/:category_id", dishesController.searchByCategory);
 dishesRoutes.delete("/:id", dishesController.delete);
 dishesRoutes.patch("/:id/image", upload.single("image"), dishImageController.update);
-
-
+dishesRoutes.put("/:id", dishesController.update);
 
 module.exports = dishesRoutes

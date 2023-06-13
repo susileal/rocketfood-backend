@@ -48,42 +48,33 @@ class DishesController{
   }
 
   async search(request, response){
-    const {  name, ingredients } = request.query;
+    const { searchTerm } = request.query;
 
     let dishes;
    
-   if(ingredients){
+   if(searchTerm){
       
-    const filterIngredients= ingredients.split(',').map(ingredient => ingredient.trim());
+    const value= searchTerm.trim();
 
     dishes = await knex("ingredients")
-    .select([
-      "dishes.id",
-      "dishes.name",
-    ])
-    .whereLike("dishes.name", `%${name}%`)
-    .whereIn("ingredients.name", filterIngredients)
+    .distinct("dishes.id")
+    .select("dishes.name",
+    "dishes.description",
+    "dishes.price",
+    "dishes.category_id",
+    "dishes.image")
+
+    .whereLike("dishes.name", `%${value}%`)
+    .orWhereLike("ingredients.name", `%${value}%`)
     .innerJoin("dishes", "dishes.id", "ingredients.dish_id")
     .orderBy("dishes.name")
 
     } else {
       dishes =  await knex("dishes")
-     .whereLike("name", `%${name}%`)
      .orderBy("name");
     }
-
-    const userIngredients = await knex("ingredients");
-    const dishesWithIngredients = dishes.map(dishes => {
-    const dishIngredients = userIngredients.filter(ingredient => ingredient.dish_id === dishes.id);
-
-      return {
-        ...dishes,
-        ingredient: dishIngredients
-      }
-    })
-
-
-    return response.json(dishesWithIngredients);
+    
+    return response.json(dishes);
   }
 
   async searchByCategory(request, response){
@@ -111,6 +102,32 @@ class DishesController{
 
     
   }
+
+  async update(request, response){
+    const { id } = request.params;
+    const {name, category_id, description, ingredients, price} = request.body;
+
+    await knex("dishes").update({
+      name,
+      category_id,
+      description,
+      price
+    }).where({id});
+
+    const ingredientsInsert = ingredients.map(name => {
+      return {
+        dish_id: id,
+        name
+      }
+    });
+
+    await knex("ingredients").where({ dish_id: id }).delete();
+    await knex("ingredients").insert(ingredientsInsert);
+
+    
+    return response.json();
+
+    }
 
 }
 
