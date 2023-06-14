@@ -8,7 +8,6 @@ class DishImageController {
     const {id} = request.params;
     const imageFilename = request.file.filename;
 
-
     const diskStorage = new DiskStorage();
 
     const dish = await knex("dishes")
