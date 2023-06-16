@@ -3,7 +3,7 @@
 Este é um projeto/API que oferece funcionalidades relacionadas a um sistema de entrega para restaurantes. Faz parte do projeto final do curso Explorer da RocketSeat.
 
 ## 1. Link para o produto em produção
-[rocketfood-backend-api](http:localhost:3333/)
+[rocketfood-backend-api](https://rocketfood-api-ur3w.onrender.com)
 
 ## 2. Caso queira rodar localmente
 
